@@ -10,6 +10,9 @@ namespace ORMStudy
     {
         static void Main(string[] args)
         {
+            Console.WriteLine("*************ORM研究****************");
+
+            Console.ReadKey();
         }
     }
 }
