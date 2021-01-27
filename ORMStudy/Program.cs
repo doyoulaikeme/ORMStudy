@@ -12,6 +12,10 @@ namespace ORMStudy
         {
             Console.WriteLine("*************ORM研究****************");
 
+            DBHelper db = new DBHelper();
+            var student = db.Find<Student>(1);
+            var student1 = db.Find<Student>(2);
+
             Console.ReadKey();
         }
     }

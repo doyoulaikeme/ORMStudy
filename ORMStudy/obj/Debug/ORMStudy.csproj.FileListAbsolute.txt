@@ -1,0 +1,7 @@
+E:\github项目\ORM研究\ORMStudy\ORMStudy\bin\Debug\ORMStudy.exe.config
+E:\github项目\ORM研究\ORMStudy\ORMStudy\bin\Debug\ORMStudy.exe
+E:\github项目\ORM研究\ORMStudy\ORMStudy\bin\Debug\ORMStudy.pdb
+E:\github项目\ORM研究\ORMStudy\ORMStudy\obj\Debug\ORMStudy.csprojAssemblyReference.cache
+E:\github项目\ORM研究\ORMStudy\ORMStudy\obj\Debug\ORMStudy.csproj.CoreCompileInputs.cache
+E:\github项目\ORM研究\ORMStudy\ORMStudy\obj\Debug\ORMStudy.exe
+E:\github项目\ORM研究\ORMStudy\ORMStudy\obj\Debug\ORMStudy.pdb

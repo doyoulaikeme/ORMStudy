@@ -1,0 +1,19 @@
+CREATE TABLE [dbo].[student](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](50) NULL,
+	[State] [int] null
+
+) ON [PRIMARY]
+
+
+select * from student
+
+insert into student values('测试1',1)
+insert into student values('测试2',null)
+insert into student values('测试3',3)
+insert into student values('测试4',null)
+insert into student values('测试5',null)
+insert into student values('测试6',null)
+insert into student values('测试7',null)
+insert into student values('测试8',null)
+insert into student values('测试9',9)

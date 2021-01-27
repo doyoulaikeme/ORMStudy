@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Configuration;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,7 +10,7 @@ namespace ORMStudy
 {
     public class DBHelper
     {
-        private readonly string ConnectionString = "";
+        private readonly string ConnectionString = ConfigurationManager.AppSettings["connectionStrings"];
 
         /// <summary>
         /// 一个方法满足不同表的查询
@@ -17,7 +18,7 @@ namespace ORMStudy
         /// <typeparam name="T"></typeparam>
         /// <param name="id"></param>
         /// <returns></returns>
-        public T Find<T>(int id) where T : BaseModel
+        public T Find<T>(int id) where T : BaseModel, new()
         {
 
             Type type = typeof(T);
@@ -31,11 +32,10 @@ namespace ORMStudy
                 var reader = command.ExecuteReader();
                 if (reader.Read())
                 {
-                    var t = Activator.CreateInstance<T>();
-
+                    var t = new T();
                     foreach (var item in type.GetProperties())
                     {
-                        item.SetValue(t, reader[item.Name]);
+                        item.SetValue(t, reader[item.Name] is DBNull ? null : reader[item.Name]);
                     }
 
                     return t;
