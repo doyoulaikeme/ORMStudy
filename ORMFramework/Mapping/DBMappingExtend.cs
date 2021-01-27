@@ -28,5 +28,24 @@ namespace ORMFramework.Mapping
                 return type.Name;
             }
         }
+
+        /// <summary>
+        /// 判断列名是否加了特性
+        /// 是的话以特性列名查询
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static string GetColumnName(this PropertyInfo type)
+        {
+            if (type.IsDefined(typeof(ColumnAttribute), true))
+            {
+                var attribute = type.GetCustomAttribute<ColumnAttribute>();
+                return attribute.GetColumnName();
+            }
+            else
+            {
+                return type.Name;
+            }
+        }
     }
 }

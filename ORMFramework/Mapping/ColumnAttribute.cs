@@ -7,29 +7,29 @@ using System.Threading.Tasks;
 namespace ORMFramework.Mapping
 {
     /// <summary>
-    /// 只允许类使用该特性
+    /// 只允许属性使用改特性
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class)]
-    public class TableAttribute : Attribute
+    [AttributeUsage(AttributeTargets.Property)]
+    public class ColumnAttribute : Attribute
     {
-        private string _tableName = null;
+        private string _columnName = null;
 
         /// <summary>
         /// 初始化表名
         /// </summary>
         /// <param name="tableName"></param>
-        public TableAttribute(string tableName)
+        public ColumnAttribute(string tableName)
         {
-            this._tableName = tableName;
+            this._columnName = tableName;
         }
 
         /// <summary>
         /// 获取表名
         /// </summary>
         /// <returns></returns>
-        public string GetTableName()
+        public string GetColumnName()
         {
-            return this._tableName;
+            return this._columnName;
         }
     }
 }

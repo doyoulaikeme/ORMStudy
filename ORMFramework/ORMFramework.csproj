@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Mapping\DBMappingExtend.cs" />
+    <Compile Include="Mapping\ColumnAttribute.cs" />
     <Compile Include="Mapping\TableAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
