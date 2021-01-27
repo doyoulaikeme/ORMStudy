@@ -12,10 +12,20 @@ namespace ORMStudy
         {
             Console.WriteLine("*************ORM研究****************");
 
-            DBHelper db = new DBHelper();
-            var student = db.Find<Student>(1);
-            var student1 = db.Find<Student>(2);
+            try
+            {
 
+                DBHelper db = new DBHelper();
+                //表映射
+                //通过特性表名test原表面为student
+                var student = db.Find<tableTest>(1);
+                var student1 = db.Find<tableTest>(2);
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
             Console.ReadKey();
         }
     }

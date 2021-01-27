@@ -1,0 +1,6 @@
+E:\github项目\ORM研究\ORMStudy\ORMFramework\bin\Debug\ORMFramework.dll
+E:\github项目\ORM研究\ORMStudy\ORMFramework\bin\Debug\ORMFramework.pdb
+E:\github项目\ORM研究\ORMStudy\ORMFramework\obj\Debug\ORMFramework.csprojAssemblyReference.cache
+E:\github项目\ORM研究\ORMStudy\ORMFramework\obj\Debug\ORMFramework.csproj.CoreCompileInputs.cache
+E:\github项目\ORM研究\ORMStudy\ORMFramework\obj\Debug\ORMFramework.dll
+E:\github项目\ORM研究\ORMStudy\ORMFramework\obj\Debug\ORMFramework.pdb

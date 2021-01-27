@@ -5,6 +5,7 @@ using System.Linq;
 using System.Configuration;
 using System.Text;
 using System.Threading.Tasks;
+using ORMFramework.Mapping;
 
 namespace ORMStudy
 {
@@ -23,7 +24,7 @@ namespace ORMStudy
 
             Type type = typeof(T);
             var columns = string.Join(",", type.GetProperties().Select(p => "[" + p.Name + "]"));
-            var sql = string.Format("select {0} from {1}  where ID='{2}'", columns, type.Name, id);
+            var sql = string.Format("select {0} from {1}  where ID='{2}'", columns, type.GetTableName(), id);
 
             using (SqlConnection conn = new SqlConnection(ConnectionString))
             {
