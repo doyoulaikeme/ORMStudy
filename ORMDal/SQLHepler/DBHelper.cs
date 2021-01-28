@@ -63,17 +63,12 @@ namespace ORMDal.SQLHepler
         /// <returns></returns>
         public bool Insert<T>(T type) where T : BaseModel, new()
         {
-            //获取对应类型
-            var model = typeof(T);
-            //获取过滤后的所有列名
-            var allColumns = model.FilterKeyWithInsert();
-            //构造字符串
-            var columnsString = string.Join(",", allColumns.Select(p => p.GetMappingName()));
-            var valueString = string.Join(",", allColumns.Select(p => "@" + p.GetMappingName()));
-            var param = allColumns.Select(p => new SqlParameter("@" + p.GetMappingName(), p.GetValue(type))).ToArray();
 
+            var model = typeof(T);
             //拼接SQL语句
-            var sql = string.Format("insert into {0} ({1}) values({2})", model.GetMappingName(), columnsString, valueString);
+            var sql = SqlCacheHelper<T>.GetSql();
+            //将值参数化，并防止为Null
+            var param = model.GetProperties().Select(p => new SqlParameter("@" + p.GetMappingName(), p.GetValue(type) ?? DBNull.Value)).ToArray();
             //与数据库交互
             using (SqlConnection conn = new SqlConnection(ConnectionString))
             {
@@ -81,7 +76,7 @@ namespace ORMDal.SQLHepler
                 command.Parameters.AddRange(param);
                 conn.Open();
                 var result = command.ExecuteNonQuery();
-                return result == 1;
+                return result > 0;
             }
         }
     }
