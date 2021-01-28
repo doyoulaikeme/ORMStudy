@@ -12,8 +12,7 @@ namespace ORMFramework.Mapping
     [AttributeUsage(AttributeTargets.Class)]
     public class TableAttribute : MappingNameAttribute
     {
-        private string _tableName = null;
-
+ 
         /// <summary>
         /// 初始化表名
         /// </summary>

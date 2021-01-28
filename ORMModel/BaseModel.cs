@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ORMStudy
+namespace ORMModel
 {
     public class BaseModel
     {

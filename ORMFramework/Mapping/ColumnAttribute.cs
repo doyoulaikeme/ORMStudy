@@ -12,7 +12,6 @@ namespace ORMFramework.Mapping
     [AttributeUsage(AttributeTargets.Property)]
     public class ColumnAttribute : MappingNameAttribute
     {
-        private string _columnName = null;
 
         /// <summary>
         /// 初始化列名

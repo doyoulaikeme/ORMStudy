@@ -1,11 +1,12 @@
-﻿using ORMFramework.Mapping;
+﻿
+using ORMFramework.Mapping;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ORMStudy
+namespace ORMModel
 {
     /// <summary>
     /// 实体与数据库表名跟字段不一致。

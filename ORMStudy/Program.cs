@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ORMDal.SQLHepler;
+using ORMModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,8 +18,7 @@ namespace ORMStudy
             {
 
                 DBHelper db = new DBHelper();
-                //表映射
-                //通过特性表名test原表面为student
+                //映射
                 var student = db.Find<tableTest>(1);
                 var student1 = db.Find<tableTest>(2);
 

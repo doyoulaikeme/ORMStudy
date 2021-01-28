@@ -8,3 +8,7 @@ E:\github项目\ORM研究\ORMStudy\ORMStudy\obj\Debug\ORMStudy.pdb
 E:\github项目\ORM研究\ORMStudy\ORMStudy\bin\Debug\ORMFramework.dll
 E:\github项目\ORM研究\ORMStudy\ORMStudy\bin\Debug\ORMFramework.pdb
 E:\github项目\ORM研究\ORMStudy\ORMStudy\obj\Debug\ORMStudy.csproj.CopyComplete
+E:\github项目\ORM研究\ORMStudy\ORMStudy\bin\Debug\ORMDal.dll
+E:\github项目\ORM研究\ORMStudy\ORMStudy\bin\Debug\ORMModel.dll
+E:\github项目\ORM研究\ORMStudy\ORMStudy\bin\Debug\ORMDal.pdb
+E:\github项目\ORM研究\ORMStudy\ORMStudy\bin\Debug\ORMModel.pdb

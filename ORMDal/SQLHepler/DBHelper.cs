@@ -5,9 +5,10 @@ using System.Linq;
 using System.Configuration;
 using System.Text;
 using System.Threading.Tasks;
+using ORMModel;
 using ORMFramework.Mapping;
 
-namespace ORMStudy
+namespace ORMDal.SQLHepler
 {
     public class DBHelper
     {

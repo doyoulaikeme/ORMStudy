@@ -1,0 +1,11 @@
+E:\github项目\ORM研究\ORMStudy\ORMDal\bin\Debug\ORMDal.dll
+E:\github项目\ORM研究\ORMStudy\ORMDal\bin\Debug\ORMDal.pdb
+E:\github项目\ORM研究\ORMStudy\ORMDal\bin\Debug\ORMFramework.dll
+E:\github项目\ORM研究\ORMStudy\ORMDal\bin\Debug\ORMModel.dll
+E:\github项目\ORM研究\ORMStudy\ORMDal\bin\Debug\ORMFramework.pdb
+E:\github项目\ORM研究\ORMStudy\ORMDal\bin\Debug\ORMModel.pdb
+E:\github项目\ORM研究\ORMStudy\ORMDal\obj\Debug\ORMDal.csprojAssemblyReference.cache
+E:\github项目\ORM研究\ORMStudy\ORMDal\obj\Debug\ORMDal.csproj.CoreCompileInputs.cache
+E:\github项目\ORM研究\ORMStudy\ORMDal\obj\Debug\ORMDal.csproj.CopyComplete
+E:\github项目\ORM研究\ORMStudy\ORMDal\obj\Debug\ORMDal.dll
+E:\github项目\ORM研究\ORMStudy\ORMDal\obj\Debug\ORMDal.pdb
