@@ -33,6 +33,8 @@ namespace ORMDal.SQLHepler
         private static string _insertCacheSql = null;
         private static string _findCacheSql = null;
         private static string _deleteCacheSql = null;
+        private static string _updateCacheSql = null;
+
 
         /// <summary>
         /// 静态初始化
@@ -51,13 +53,20 @@ namespace ORMDal.SQLHepler
                 //获取对应类型
                 var model = typeof(T);
                 //获取过滤后的所有列名
-                var allColumns = model.FilterKeyWithInsert();
+                var allColumns = model.FilterKeyWithSql();
                 //构造字符串
                 var columnsString = string.Join(",", allColumns.Select(p => p.GetMappingName()));
                 var valueString = string.Join(",", allColumns.Select(p => "@" + p.GetMappingName()));
                 //拼接SQL语句
                 _insertCacheSql = string.Format("insert into {0} ({1}) values({2})", model.GetMappingName(), columnsString, valueString);
 
+            }
+
+            {
+                var model = typeof(T);
+                var filterColumns = model.FilterKeyWithSql();
+                var columnsString = string.Join(",", filterColumns.Select(p => p.GetMappingName() + "=@" + p.GetMappingName()));
+                _updateCacheSql = string.Format("update [{0}] set {1} where id=@id", model.GetMappingName(), columnsString);
             }
         }
 
@@ -75,6 +84,8 @@ namespace ORMDal.SQLHepler
                     return _insertCacheSql;
                 case SqlCacheBuilderType.Delete:
                     return _deleteCacheSql;
+                case SqlCacheBuilderType.Update:
+                    return _updateCacheSql;
                 default:
                     throw new Exception("SqlCacheBuilderType Not Found！");
             }

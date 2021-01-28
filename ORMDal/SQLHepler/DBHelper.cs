@@ -78,8 +78,53 @@ namespace ORMDal.SQLHepler
                 SqlCommand command = new SqlCommand(sql, conn);
                 command.Parameters.AddRange(param);
                 conn.Open();
-                var result = command.ExecuteNonQuery();
-                return result > 0;
+                return command.ExecuteNonQuery() > 0;
+            }
+        }
+
+        /// <summary>
+        /// 修改
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public bool Update<T>(T type) where T : BaseModel, new()
+        {
+            var model = typeof(T);
+            var sql = SqlCacheHelper<T>.GetSql(SqlCacheBuilderType.Update);
+            var parameters = model.GetProperties().Select(p => new SqlParameter("@" + p.GetMappingName(), p.GetValue(model) ?? DBNull.Value)).ToArray();
+            //与数据库交互
+            using (SqlConnection conn = new SqlConnection(ConnectionString))
+            {
+                SqlCommand command = new SqlCommand(sql, conn);
+                command.Parameters.AddRange(parameters);
+                command.Parameters.Add(new SqlParameter("@id", type.ID));
+                conn.Open();
+                return command.ExecuteNonQuery() > 0;
+            }
+
+        }
+
+        /// <summary>
+        /// 删除
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool Delete<T>(int id) where T : BaseModel, new()
+        {
+            Type type = typeof(T);
+            //拼接SQL语句
+            var sql = SqlCacheHelper<T>.GetSql(SqlCacheBuilderType.Delete);
+            var parameters = new SqlParameter[] {
+            new SqlParameter("@id",id)
+            };
+            using (SqlConnection conn = new SqlConnection(ConnectionString))
+            {
+                SqlCommand command = new SqlCommand(sql, conn);
+                command.Parameters.AddRange(parameters);
+                conn.Open();
+                return command.ExecuteNonQuery() > 0;
             }
         }
     }
