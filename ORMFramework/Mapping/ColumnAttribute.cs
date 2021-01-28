@@ -15,7 +15,7 @@ namespace ORMFramework.Mapping
         private string _columnName = null;
 
         /// <summary>
-        /// 初始化表名
+        /// 初始化列名
         /// </summary>
         /// <param name="tableName"></param>
         public ColumnAttribute(string tableName)
@@ -24,7 +24,7 @@ namespace ORMFramework.Mapping
         }
 
         /// <summary>
-        /// 获取表名
+        /// 获取列名
         /// </summary>
         /// <returns></returns>
         public string GetColumnName()

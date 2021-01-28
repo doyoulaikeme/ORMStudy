@@ -40,11 +40,12 @@ namespace ORMFramework.Mapping
             if (type.IsDefined(typeof(ColumnAttribute), true))
             {
                 var attribute = type.GetCustomAttribute<ColumnAttribute>();
-                return attribute.GetColumnName();
+                //添加别名，以便返回时不需要再转换。
+                return "[" + attribute.GetColumnName() + "] as [" + type.Name + "]";
             }
             else
             {
-                return type.Name;
+                return "[" + type.Name + "]";
             }
         }
     }
