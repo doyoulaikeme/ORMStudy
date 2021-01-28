@@ -18,16 +18,25 @@ namespace ORMStudy
             {
 
                 DBHelper db = new DBHelper();
-                //映射
-                var student = db.Find<tableTest>(1);
-                var student1 = db.Find<tableTest>(2);
 
+                //添加
                 var model = new tableTest();
                 model.State = 12;
                 model.名称 = "测试添加";
                 db.Insert(model);
                 db.Insert(model);
-                var isInsert = db.Insert(model);
+
+
+                //修改
+                var student = db.Find<tableTest>(1);
+                student.名称 += "修改";
+                db.Update(student);
+
+                //查询
+                var newStudent = db.Find<tableTest>(1);
+                //删除
+                db.Delete<tableTest>(student.ID);
+                var oldStudent = db.Find<tableTest>(student.ID);
 
 
             }

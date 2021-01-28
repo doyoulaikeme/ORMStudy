@@ -113,7 +113,6 @@ namespace ORMDal.SQLHepler
         /// <returns></returns>
         public bool Delete<T>(int id) where T : BaseModel, new()
         {
-            Type type = typeof(T);
             //拼接SQL语句
             var sql = SqlCacheHelper<T>.GetSql(SqlCacheBuilderType.Delete);
             var parameters = new SqlParameter[] {
