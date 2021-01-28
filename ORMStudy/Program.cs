@@ -25,6 +25,8 @@ namespace ORMStudy
                 var model = new tableTest();
                 model.State = 12;
                 model.名称 = "测试添加";
+                db.Insert(model);
+                db.Insert(model);
                 var isInsert = db.Insert(model);
 
 

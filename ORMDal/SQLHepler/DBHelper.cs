@@ -25,12 +25,15 @@ namespace ORMDal.SQLHepler
         {
 
             Type type = typeof(T);
-            var columns = string.Join(",", type.GetProperties().Select(p => p.GetMappingName()));
-            var sql = string.Format("select {0} from {1}  where ID='{2}'", columns, type.GetMappingName(), id);
-
+            //拼接SQL语句
+            var sql = SqlCacheHelper<T>.GetSql(SqlCacheBuilderType.Find);
+            var parameters = new SqlParameter[] {
+            new SqlParameter("@id",id)
+            };
             using (SqlConnection conn = new SqlConnection(ConnectionString))
             {
                 SqlCommand command = new SqlCommand(sql, conn);
+                command.Parameters.AddRange(parameters);
                 conn.Open();
                 var reader = command.ExecuteReader();
                 if (reader.Read())
@@ -66,7 +69,7 @@ namespace ORMDal.SQLHepler
 
             var model = typeof(T);
             //拼接SQL语句
-            var sql = SqlCacheHelper<T>.GetSql();
+            var sql = SqlCacheHelper<T>.GetSql(SqlCacheBuilderType.Insert);
             //将值参数化，并防止为Null
             var param = model.GetProperties().Select(p => new SqlParameter("@" + p.GetMappingName(), p.GetValue(type) ?? DBNull.Value)).ToArray();
             //与数据库交互
