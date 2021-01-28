@@ -10,7 +10,7 @@ namespace ORMFramework.Mapping
     /// 只允许属性使用改特性
     /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
-    public class ColumnAttribute : Attribute
+    public class ColumnAttribute : MappingNameAttribute
     {
         private string _columnName = null;
 
@@ -18,18 +18,11 @@ namespace ORMFramework.Mapping
         /// 初始化列名
         /// </summary>
         /// <param name="tableName"></param>
-        public ColumnAttribute(string tableName)
+        public ColumnAttribute(string tableName) : base(tableName)
         {
-            this._columnName = tableName;
+           
         }
 
-        /// <summary>
-        /// 获取列名
-        /// </summary>
-        /// <returns></returns>
-        public string GetColumnName()
-        {
-            return this._columnName;
-        }
+     
     }
 }

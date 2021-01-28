@@ -23,8 +23,8 @@ namespace ORMStudy
         {
 
             Type type = typeof(T);
-            var columns = string.Join(",", type.GetProperties().Select(p => p.GetColumnName() ));
-            var sql = string.Format("select {0} from {1}  where ID='{2}'", columns, type.GetTableName(), id);
+            var columns = string.Join(",", type.GetProperties().Select(p => p.GetMappingName()));
+            var sql = string.Format("select {0} from {1}  where ID='{2}'", columns, type.GetMappingName(), id);
 
             using (SqlConnection conn = new SqlConnection(ConnectionString))
             {

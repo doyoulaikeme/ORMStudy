@@ -10,7 +10,7 @@ namespace ORMFramework.Mapping
     /// 只允许类使用该特性
     /// </summary>
     [AttributeUsage(AttributeTargets.Class)]
-    public class TableAttribute : Attribute
+    public class TableAttribute : MappingNameAttribute
     {
         private string _tableName = null;
 
@@ -18,18 +18,11 @@ namespace ORMFramework.Mapping
         /// 初始化表名
         /// </summary>
         /// <param name="tableName"></param>
-        public TableAttribute(string tableName)
+        public TableAttribute(string tableName) : base(tableName)
         {
-            this._tableName = tableName;
+
         }
 
-        /// <summary>
-        /// 获取表名
-        /// </summary>
-        /// <returns></returns>
-        public string GetTableName()
-        {
-            return this._tableName;
-        }
+
     }
 }

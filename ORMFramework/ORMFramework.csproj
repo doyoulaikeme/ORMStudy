@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Mapping\MappingNameAttribute.cs" />
     <Compile Include="Mapping\DBMappingExtend.cs" />
     <Compile Include="Mapping\ColumnAttribute.cs" />
     <Compile Include="Mapping\TableAttribute.cs" />
