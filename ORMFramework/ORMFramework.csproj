@@ -41,6 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DBFilter\DBFilterExtend.cs" />
+    <Compile Include="DBFilter\KeyAttribute.cs" />
     <Compile Include="Mapping\MappingNameAttribute.cs" />
     <Compile Include="Mapping\DBMappingExtend.cs" />
     <Compile Include="Mapping\ColumnAttribute.cs" />

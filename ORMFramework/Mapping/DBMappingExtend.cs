@@ -22,11 +22,15 @@ namespace ORMFramework.Mapping
             if (type.IsDefined(typeof(MappingNameAttribute), true))
             {
                 var attribute = type.GetCustomAttribute<MappingNameAttribute>();
-                return "[" + attribute.GetName() + "] as [" + type.Name + "]";
+                //例如数据库表名为Student,类名为testTable,将转化为[Student] as [testTable]
+                //return "[" + attribute.GetName() + "] as [" + type.Name + "]";
+
+                return attribute.GetName();
             }
             else
             {
-                return "[" + type.Name + "]";
+                return type.Name;
+                //return "[" + type.Name + "]";
             }
         }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ORMFramework.DBFilter;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,10 @@ namespace ORMModel
 {
     public class BaseModel
     {
+        /// <summary>
+        /// KeyAttribute过滤ID
+        /// </summary>
+        [KeyAttribute]
         public int ID { get; set; }
     }
 }

@@ -22,6 +22,12 @@ namespace ORMStudy
                 var student = db.Find<tableTest>(1);
                 var student1 = db.Find<tableTest>(2);
 
+                var model = new tableTest();
+                model.State = 12;
+                model.名称 = "测试添加";
+                var isInsert = db.Insert(model);
+
+
             }
             catch (Exception ex)
             {
