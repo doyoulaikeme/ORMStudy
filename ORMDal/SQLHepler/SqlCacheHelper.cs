@@ -46,7 +46,7 @@ namespace ORMDal.SQLHepler
                 Type type = typeof(T);
                 var columns = string.Join(",", type.GetProperties().Select(p => p.GetMappingName()));
                 _findCacheSql = string.Format("select {0} from {1}  where ID=@id", columns, type.GetMappingName());
-                _deleteCacheSql = string.Format("delete * from {0} where ID=@id", type.GetMappingName());
+                _deleteCacheSql = string.Format("delete  from {0} where ID=@id", type.GetMappingName());
             }
 
             {
