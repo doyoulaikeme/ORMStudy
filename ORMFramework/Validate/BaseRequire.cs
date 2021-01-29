@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ORMFramework.Validate
 {
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
     public abstract class BaseRequire : Attribute
     {
         public abstract bool Validate(object obj);
