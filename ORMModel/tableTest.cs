@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ORMFramework.Validate;
 
 namespace ORMModel
 {
@@ -19,6 +20,7 @@ namespace ORMModel
         /// </summary>
         [Column("Name")]
         public string 名称 { get; set; }
+        [Require]
 
         public int? State { get; set; }
     }

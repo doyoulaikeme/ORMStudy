@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using ORMModel;
 using ORMFramework.Mapping;
 using ORMFramework.DBFilter;
+using ORMFramework.Validate;
 
 namespace ORMDal.SQLHepler
 {
@@ -90,6 +91,11 @@ namespace ORMDal.SQLHepler
         /// <returns></returns>
         public bool Update<T>(T type) where T : BaseModel, new()
         {
+            if (!type.ValidateData())
+            {
+                throw new Exception("数据出错！");
+            }
+
             var model = typeof(T);
             var sql = SqlCacheHelper<T>.GetSql(SqlCacheBuilderType.Update);
             var parameters = model.GetProperties().Select(p => new SqlParameter("@" + p.GetMappingName(), p.GetValue(model) ?? DBNull.Value)).ToArray();
