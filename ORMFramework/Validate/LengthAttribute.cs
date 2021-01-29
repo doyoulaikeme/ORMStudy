@@ -12,8 +12,8 @@ namespace ORMFramework.Validate
     [AttributeUsage(AttributeTargets.Property)]
     public class LengthAttribute : BaseRequire
     {
-        public int _min = 0;
-        public int _max = 0;
+        private int _min = 0;
+        private int _max = 0;
         public LengthAttribute(int min, int max)
         {
             _min = min;
