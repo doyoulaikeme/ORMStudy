@@ -19,6 +19,7 @@ namespace ORMModel
         /// 例如数据库列名为Name,类名为名称,将转化为[Name] as [名称]
         /// </summary>
         [Column("Name")]
+        [Length(1, 50)]
         public string 名称 { get; set; }
         [Require]
 

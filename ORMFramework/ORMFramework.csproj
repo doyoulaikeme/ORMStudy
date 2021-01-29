@@ -48,6 +48,8 @@
     <Compile Include="Mapping\ColumnAttribute.cs" />
     <Compile Include="Mapping\TableAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Validate\BaseRequire.cs" />
+    <Compile Include="Validate\LengthAttribute.cs" />
     <Compile Include="Validate\RequireAttribute.cs" />
     <Compile Include="Validate\RequireExtend.cs" />
   </ItemGroup>

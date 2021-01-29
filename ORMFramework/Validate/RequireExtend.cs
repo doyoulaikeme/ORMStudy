@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -19,13 +20,19 @@ namespace ORMFramework.Validate
             var type = typeof(T);
             foreach (var propertyInfo in type.GetProperties())
             {
-                if (propertyInfo.IsDefined(typeof(RequireAttribute), true))
+                //通过抽象方法
+                if (propertyInfo.IsDefined(typeof(BaseRequire), true))
                 {
                     var oVal = propertyInfo.GetValue(obj);
-                    if (oVal == null || string.IsNullOrWhiteSpace(oVal.ToString()))
+                    var attributeList = propertyInfo.GetCustomAttributes<BaseRequire>();
+                    foreach (var attribute in attributeList)
                     {
-                        return false;
+                        if (!attribute.Validate(oVal))
+                        {
+                            return false;
+                        }
                     }
+
                 }
             }
             return true;
