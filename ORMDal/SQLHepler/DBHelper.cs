@@ -72,15 +72,9 @@ namespace ORMDal.SQLHepler
             //拼接SQL语句
             var sql = SqlCacheHelper<T>.GetSql(SqlCacheBuilderType.Insert);
             //将值参数化，并防止为Null
-            var param = model.GetProperties().Select(p => new SqlParameter("@" + p.GetMappingName(), p.GetValue(type) ?? DBNull.Value)).ToArray();
+            var parameters = model.GetProperties().Select(p => new SqlParameter("@" + p.GetMappingName(), p.GetValue(type) ?? DBNull.Value)).ToArray();
             //与数据库交互
-            using (SqlConnection conn = new SqlConnection(ConnectionString))
-            {
-                SqlCommand command = new SqlCommand(sql, conn);
-                command.Parameters.AddRange(param);
-                conn.Open();
-                return command.ExecuteNonQuery() > 0;
-            }
+            return ExecuteSql<bool>(sql, parameters, SqlCommand => SqlCommand.ExecuteNonQuery() > 0);
         }
 
         /// <summary>
@@ -100,14 +94,7 @@ namespace ORMDal.SQLHepler
             var sql = SqlCacheHelper<T>.GetSql(SqlCacheBuilderType.Update);
             var parameters = model.GetProperties().Select(p => new SqlParameter("@" + p.GetMappingName(), p.GetValue(model) ?? DBNull.Value)).ToArray();
             //与数据库交互
-            using (SqlConnection conn = new SqlConnection(ConnectionString))
-            {
-                SqlCommand command = new SqlCommand(sql, conn);
-                command.Parameters.AddRange(parameters);
-                command.Parameters.Add(new SqlParameter("@id", type.ID));
-                conn.Open();
-                return command.ExecuteNonQuery() > 0;
-            }
+            return ExecuteSql<bool>(sql, parameters, SqlCommand => SqlCommand.ExecuteNonQuery() > 0);
 
         }
 
@@ -124,12 +111,18 @@ namespace ORMDal.SQLHepler
             var parameters = new SqlParameter[] {
             new SqlParameter("@id",id)
             };
+            return ExecuteSql<bool>(sql, parameters, sqlcommand => sqlcommand.ExecuteNonQuery() > 0);
+        }
+
+
+        private Q ExecuteSql<Q>(string sql, SqlParameter[] parameters, Func<SqlCommand, Q> func)
+        {
             using (SqlConnection conn = new SqlConnection(ConnectionString))
             {
                 SqlCommand command = new SqlCommand(sql, conn);
                 command.Parameters.AddRange(parameters);
                 conn.Open();
-                return command.ExecuteNonQuery() > 0;
+                return func.Invoke(command);
             }
         }
     }
