@@ -31,12 +31,9 @@ namespace ORMDal.SQLHepler
             var parameters = new SqlParameter[] {
             new SqlParameter("@id",id)
             };
-            using (SqlConnection conn = new SqlConnection(ConnectionString))
+            return ExecuteSql(sql, parameters, sqlcommand =>
             {
-                SqlCommand command = new SqlCommand(sql, conn);
-                command.Parameters.AddRange(parameters);
-                conn.Open();
-                var reader = command.ExecuteReader();
+                var reader = sqlcommand.ExecuteReader();
                 if (reader.Read())
                 {
                     var t = new T();
@@ -47,16 +44,14 @@ namespace ORMDal.SQLHepler
                         //将数据库列赋值给对应属性
                         item.SetValue(t, reader[name] is DBNull ? null : reader[name]);
                     }
-
                     return t;
                 }
                 else
                 {
                     return null;
                 }
-            }
 
-
+            });
         }
 
         /// <summary>
