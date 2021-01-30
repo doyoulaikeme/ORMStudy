@@ -66,7 +66,7 @@ namespace ORMDal.SQLHepler
                 var model = typeof(T);
                 var filterColumns = model.FilterKeyWithSql();
                 var columnsString = string.Join(",", filterColumns.Select(p => p.GetMappingName() + "=@" + p.GetMappingName()));
-                _updateCacheSql = string.Format("update [{0}] set {1} where id=@id", model.GetMappingName(), columnsString);
+                _updateCacheSql = string.Format("update [{0}] set {1} ", model.GetMappingName(), columnsString);
             }
         }
 

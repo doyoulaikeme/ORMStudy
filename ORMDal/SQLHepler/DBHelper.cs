@@ -25,10 +25,6 @@ namespace ORMDal.SQLHepler
         /// <returns></returns>
         public T Find<T>(Expression<Func<T, bool>> exp) where T : BaseModel, new()
         {
-            var test = exp.Parameters;
-
-
-
             Type type = typeof(T);
             //拼接SQL语句
             var sql = SqlCacheHelper<T>.GetSql(SqlCacheBuilderType.Find);
@@ -64,6 +60,50 @@ namespace ORMDal.SQLHepler
         }
 
         /// <summary>
+        /// 查询
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public T Find<T>(int id) where T : BaseModel, new()
+        {
+
+            Type type = typeof(T);
+            //拼接SQL语句
+            var sql = SqlCacheHelper<T>.GetSql(SqlCacheBuilderType.Find);
+            sql += "where id=@id";
+            var parameters = new SqlParameter[] {
+                new SqlParameter("@id",id)
+            };
+            using (SqlConnection conn = new SqlConnection(ConnectionString))
+            {
+                SqlCommand command = new SqlCommand(sql, conn);
+                command.Parameters.AddRange(parameters);
+                conn.Open();
+                var reader = command.ExecuteReader();
+                if (reader.Read())
+                {
+                    var t = new T();
+                    foreach (var item in type.GetProperties())
+                    {
+                        //获取数据库列名
+                        var name = item.GetMappingName();
+                        //将数据库列赋值给对应属性
+                        item.SetValue(t, reader[name] is DBNull ? null : reader[name]);
+                    }
+
+                    return t;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
+
+        }
+
+        /// <summary>
         /// 添加
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -96,6 +136,7 @@ namespace ORMDal.SQLHepler
 
             var model = typeof(T);
             var sql = SqlCacheHelper<T>.GetSql(SqlCacheBuilderType.Update);
+            sql += "where id=@id";
             var pts = model.GetProperties().Select(p => new SqlParameter("@" + p.GetMappingName(), p.GetValue(model) ?? DBNull.Value)).ToList();
             pts.Add(new SqlParameter("@id", type.ID));
             var parameters = pts.ToArray();
