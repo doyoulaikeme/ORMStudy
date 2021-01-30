@@ -28,13 +28,13 @@ namespace ORMStudy
 
 
                 //修改
-                var student = db.Find<tableTest>(1);
-                student.名称 += "修改";
-                student.State = null;
-                db.Update(student);
+                var student = db.Find<tableTest>(p => p.ID == 1 || p.State == null && p.名称 == "测试");
+                //student.名称 += "修改";
+                //student.State = null;
+                //db.Update(student);
 
                 //查询
-                var newStudent = db.Find<tableTest>(1);
+                //var newStudent = db.Find<tableTest>();
 
                 ////删除
                 //db.Delete<tableTest>(student.ID);

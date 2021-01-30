@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Configuration;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using ORMModel;
@@ -22,15 +23,23 @@ namespace ORMDal.SQLHepler
         /// <typeparam name="T"></typeparam>
         /// <param name="id"></param>
         /// <returns></returns>
-        public T Find<T>(int id) where T : BaseModel, new()
+        public T Find<T>(Expression<Func<T, bool>> exp) where T : BaseModel, new()
         {
+            var test = exp.Parameters;
+
+
 
             Type type = typeof(T);
             //拼接SQL语句
             var sql = SqlCacheHelper<T>.GetSql(SqlCacheBuilderType.Find);
-            var parameters = new SqlParameter[] {
-            new SqlParameter("@id",id)
-            };
+
+            CustomVisitor<T> visitor = new CustomVisitor<T>();
+            visitor.Visit(exp);
+            sql += visitor.GetSqlString();
+            var valDic = visitor.GetValDic();
+
+            var parameters = valDic.Select(p => p.Value == null ? new SqlParameter(p.Key, DBNull.Value) : new SqlParameter(p.Key, p.Value)).ToArray();
+
             return ExecuteSql(sql, parameters, sqlcommand =>
             {
                 var reader = sqlcommand.ExecuteReader();
@@ -87,11 +96,15 @@ namespace ORMDal.SQLHepler
 
             var model = typeof(T);
             var sql = SqlCacheHelper<T>.GetSql(SqlCacheBuilderType.Update);
-            var parameters = model.GetProperties().Select(p => new SqlParameter("@" + p.GetMappingName(), p.GetValue(model) ?? DBNull.Value)).ToArray();
+            var pts = model.GetProperties().Select(p => new SqlParameter("@" + p.GetMappingName(), p.GetValue(model) ?? DBNull.Value)).ToList();
+            pts.Add(new SqlParameter("@id", type.ID));
+            var parameters = pts.ToArray();
             //与数据库交互
             return ExecuteSql<bool>(sql, parameters, SqlCommand => SqlCommand.ExecuteNonQuery() > 0);
 
         }
+
+
 
         /// <summary>
         /// 删除
@@ -99,16 +112,27 @@ namespace ORMDal.SQLHepler
         /// <typeparam name="T"></typeparam>
         /// <param name="id"></param>
         /// <returns></returns>
-        public bool Delete<T>(int id) where T : BaseModel, new()
+        public bool Delete<T>(Expression<Func<T, bool>> exp) where T : BaseModel, new()
         {
             //拼接SQL语句
             var sql = SqlCacheHelper<T>.GetSql(SqlCacheBuilderType.Delete);
-            var parameters = new SqlParameter[] {
-            new SqlParameter("@id",id)
-            };
+
+            CustomVisitor<T> visitor = new CustomVisitor<T>();
+            visitor.Visit(exp);
+            sql += visitor.GetSqlString();
+            var valDic = visitor.GetValDic();
+            var parameters = valDic.Select(p => p.Value == null ? new SqlParameter(p.Key, DBNull.Value) : new SqlParameter(p.Key, p.Value)).ToArray();
             return ExecuteSql<bool>(sql, parameters, sqlcommand => sqlcommand.ExecuteNonQuery() > 0);
         }
 
+        /// <summary>
+        /// 代码复用
+        /// </summary>
+        /// <typeparam name="Q"></typeparam>
+        /// <param name="sql"></param>
+        /// <param name="parameters"></param>
+        /// <param name="func"></param>
+        /// <returns></returns>
 
         private Q ExecuteSql<Q>(string sql, SqlParameter[] parameters, Func<SqlCommand, Q> func)
         {
