@@ -13,10 +13,18 @@ using ORMFramework.Validate;
 
 namespace ORMDal.SQLHepler
 {
+
     public class DBHelper
     {
-        private readonly string ConnectionString = ConfigurationManager.AppSettings["connectionStrings"];
+        protected enum DBOperateType
+        {
+            Write,
+            Read
+        }
 
+        private static readonly string WriteConnectionString = ConfigurationManager.AppSettings["Write_connectionStrings"];
+
+        private static readonly string[] ReadConnectioString = ConfigurationManager.AppSettings["Read_connectionStrings"].Split(',');
         /// <summary>
         /// 查询
         /// </summary>
@@ -56,7 +64,7 @@ namespace ORMDal.SQLHepler
                     return null;
                 }
 
-            });
+            }, DBOperateType.Read);
         }
 
         /// <summary>
@@ -75,12 +83,9 @@ namespace ORMDal.SQLHepler
             var parameters = new SqlParameter[] {
                 new SqlParameter("@id",id)
             };
-            using (SqlConnection conn = new SqlConnection(ConnectionString))
+            return ExecuteSql(sql, parameters, sqlcommand =>
             {
-                SqlCommand command = new SqlCommand(sql, conn);
-                command.Parameters.AddRange(parameters);
-                conn.Open();
-                var reader = command.ExecuteReader();
+                var reader = sqlcommand.ExecuteReader();
                 if (reader.Read())
                 {
                     var t = new T();
@@ -91,15 +96,14 @@ namespace ORMDal.SQLHepler
                         //将数据库列赋值给对应属性
                         item.SetValue(t, reader[name] is DBNull ? null : reader[name]);
                     }
-
                     return t;
                 }
                 else
                 {
                     return null;
                 }
-            }
 
+            }, DBOperateType.Read);
 
         }
 
@@ -118,7 +122,7 @@ namespace ORMDal.SQLHepler
             //将值参数化，并防止为Null
             var parameters = model.GetProperties().Select(p => new SqlParameter("@" + p.GetMappingName(), p.GetValue(type) ?? DBNull.Value)).ToArray();
             //与数据库交互
-            return ExecuteSql<bool>(sql, parameters, SqlCommand => SqlCommand.ExecuteNonQuery() > 0);
+            return ExecuteSql<bool>(sql, parameters, SqlCommand => SqlCommand.ExecuteNonQuery() > 0, DBOperateType.Write);
         }
 
         /// <summary>
@@ -141,7 +145,7 @@ namespace ORMDal.SQLHepler
             pts.Add(new SqlParameter("@id", type.ID));
             var parameters = pts.ToArray();
             //与数据库交互
-            return ExecuteSql<bool>(sql, parameters, SqlCommand => SqlCommand.ExecuteNonQuery() > 0);
+            return ExecuteSql<bool>(sql, parameters, SqlCommand => SqlCommand.ExecuteNonQuery() > 0, DBOperateType.Write);
 
         }
 
@@ -163,7 +167,7 @@ namespace ORMDal.SQLHepler
             sql += visitor.GetSqlString();
             var valDic = visitor.GetValDic();
             var parameters = valDic.Select(p => p.Value == null ? new SqlParameter(p.Key, DBNull.Value) : new SqlParameter(p.Key, p.Value)).ToArray();
-            return ExecuteSql<bool>(sql, parameters, sqlcommand => sqlcommand.ExecuteNonQuery() > 0);
+            return ExecuteSql<bool>(sql, parameters, sqlcommand => sqlcommand.ExecuteNonQuery() > 0, DBOperateType.Write);
         }
 
         /// <summary>
@@ -175,9 +179,10 @@ namespace ORMDal.SQLHepler
         /// <param name="func"></param>
         /// <returns></returns>
 
-        private Q ExecuteSql<Q>(string sql, SqlParameter[] parameters, Func<SqlCommand, Q> func)
+        private Q ExecuteSql<Q>(string sql, SqlParameter[] parameters, Func<SqlCommand, Q> func, DBOperateType operateType)
         {
-            using (SqlConnection conn = new SqlConnection(ConnectionString))
+            var connString = GetConnectionString(operateType);
+            using (SqlConnection conn = new SqlConnection(connString))
             {
                 SqlCommand command = new SqlCommand(sql, conn);
                 command.Parameters.AddRange(parameters);
@@ -185,5 +190,45 @@ namespace ORMDal.SQLHepler
                 return func.Invoke(command);
             }
         }
+
+        private static int _index = 0;
+        private string GetConnectionString(DBOperateType operateType)
+        {
+            string connectionString = null;
+            if (connectionString == null) throw new ArgumentNullException(nameof(connectionString));
+            switch (operateType)
+            {
+                case DBOperateType.Write:
+                    connectionString = WriteConnectionString;
+                    break;
+                case DBOperateType.Read:
+                    //随机访问从库
+                    //connectionString = ReadConnectioString[new Random().Next(0, ReadConnectioString.Length)];
+                    //轮询访问从库
+                    //connectionString = ReadConnectioString[_index++ % ReadConnectioString.Length];
+                    //权重访问从库
+                    connectionString = ReadConnectioString[new Random(_index++).Next(0, _AllDbConnection.Length)];
+                    break;
+                default:
+                    throw new Exception("数据库连接字符串出错！");
+            }
+            return connectionString;
+        }
+
+        /// <summary>
+        /// 模拟权重
+        /// </summary>
+        private static string[] _AllDbConnection = new string[]
+        {
+            ReadConnectioString[0],
+            ReadConnectioString[1],
+            ReadConnectioString[1],
+            ReadConnectioString[2],
+            ReadConnectioString[2],
+            ReadConnectioString[2],
+            ReadConnectioString[2]
+        };
+
+
     }
 }
